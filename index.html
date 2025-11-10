@@ -3,213 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Apple Store</title>
+    <style>
+        .logo { height: 50px; }
+        .image-map { max-width: 100%; height: auto; }
+    </style>
 </head>
 <body>
-    <header id="header">
+    <!-- Header -->
+    <header class="bg-dark text-white py-3">
         <div class="container">
-            <div class="header-content">
-                <img src="https://upload.wikimedia.org/wikipedia/kk/thumb/3/36/Paris_Saint-Germain_F.C.png/500px-Paris_Saint-Germain_F.C.png" alt="PSG Logo" class="logo" />
-                <div class="site-title">Домашняя работа номер 2</div>
+            <div class="d-flex align-items-center">
+                <img src="https://upload.wikimedia.org/wikipedia/kk/thumb/3/36/Paris_Saint-Germain_F.C.png/500px-Paris_Saint-Germain_F.C.png" 
+                     alt="PSG Logo" class="logo me-3">
+                <h1 class="h4 mb-0">Домашняя работа номер 4</h1>
             </div>
         </div>
     </header>
 
-    <nav id="navigation">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
         <div class="container">
-            <ul class="nav-menu">
-                <li><a href="#">Я</a></li>
-                <li><a href="#">Хочу</a></li>
-                <li><a href="#">Спать</a></li>
-            </ul>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link text-white" href="#">Я</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#">Хочу</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#">Спать</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#fragment-target">Фрагмент</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#calculator">Калькулятор</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <main id="main-content">
-        <div class="container">
-            <div class="content-wrapper">
-                <section class="links-section" id="links">
-                    <h2>Ссылки</h2>
-                    <ul class="links-list">
-                        <li><a href="http://kubsu.ru">Сайт КубГУ</a></li>
-                        <li><a href="https://kubsu.ru">Сайт КубГУ 2.0</a></li>
-                        <li>
-                            <a href="https://rutube.ru/">
-                                <img src="https://avatars.mds.yandex.net/i?id=d619edf8f4dfa225b65228e60debef21_l-5222505-images-thumbs&n=13" width="300" alt="Link image">
-                            </a>
-                        </li>
-                        <li><a href="krich1.html">Сокращенная ссылка на внутреннюю страницу</a></li>
-                        <li><a href="krich.html">Сокращенная ссылка на главную страницу</a></li>
-                        <li><a href="#a1">Ссылка на фрагмент</a></li>
-                        <li><a href="https://www.dota2.com/home?size=500&color=pink&width=500">Ссылка c 3 параметрами URL</a></li>
-                        <li><a href="https://moodle.kubsu.ru/course/view.php?id=780">Cсылка с параметром id в URL</a></li>
-                        <li><a href="page.html">Относительная на страницу в текущем каталоге</a></li>
-                        <li><a href="https://about.google/">Относительная на страницу в каталоге about</a></li>
-                        <li><a href="../">Относительная на страницу в каталоге уровнем выше текущего</a></li>
-                        <li><a href="/../../">Относительная на страницу в каталоге двумя уровнями выше текущего</a></li>
-                        <li>Контекстная ссылка в <a href="#">тексте</a> абзаца</li>
-                        <li><a href="https://max.ru/?ysclid=mfmx7x45ks578217796#:~:text=%D0%9C%D0%B0%D0%BA%D1%81%D0%B8%D0%BC%D1%83%D0%BC%0A%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B5%D0%B9%0A%D0%B4%D0%BB%D1%8F,%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81%D0%B0">Cсылка на фрагмент страницы стороннего сайта</a></li>
-                        <li>
-                            <img src="https://static1.srcdn.com/wordpress/wp-content/uploads/2020/04/Split-image-of-Squidward-SpongeBob-and-Mr-Krabs-from-SpongeBob-Squarepants.jpg" width="411" height="146" usemap="#map" alt="Link image">
-                            <map name="map">
-                                <area shape="rect" alt="SpongeBob" coords="18,50,138,160" href="https://spongebob.fandom.com/wiki/SpongeBob_SquarePants">
-                                <area shape="rect" alt="Patrick" coords="140,50,255,165" href="https://spongebob.fandom.com/wiki/Patrick_Star">
-                                <area shape="circle" alt="Squidward" coords="319,150,100" href="https://spongebob.fandom.com/wiki/Squidward_Tentacles">
-                            </map>
-                        </li>
-                        <li><a href="">Ссылка с пустым href</a></li>
-                        <li><a>http://kubsu.ru</a></li>
-                        <li><a href="http://" rel="nofollow">Ссылка, по которой запрещен переход поисковикам</a></li>
-                        <li><a href="http://" rel="noindex">Ссылка, по которой запрещен переход поисковикам</a></li>
-                        <li>
-                            <ol>
-                                <li><a href="https://spongebob.fandom.com/wiki/SpongeBob_SquarePants">SpongeBob</a></li>
-                                <li><a href="https://spongebob.fandom.com/wiki/Patrick_Star">Patrick</a></li>
-                                <li><a href="https://spongebob.fandom.com/wiki/Squidward_Tentacles">Squidward</a></li>
-                            </ol>
-                        </li>
-                        <li><a href="ftp://user:lover@site.ru/Comp/file.txt">FTP ссылка</a></li>
-                    </ul>
-                </section>
-                              <section class="table-section" id="table">
-                    <h2>Таблица</h2>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Колонка 1</th>
-                                <th>Колонка 2</th>
-                                <th>Колонка 3</th>
-                                <th>Колонка 4</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="2">Объединенные ячейки 1-2</td>
-                                <td>Ячейка 1.3</td>
-                                <td>Ячейка 1.4</td>
-                            </tr>
-                            <tr>
-                                <td>Ячейка 2.1</td>
-                                <td>Ячейка 2.2</td>
-                                <td>Ячейка 2.3</td>
-                                <td>Ячейка 2.4</td>
-                            </tr>
-                            <tr>
-                                <td>Ячейка 3.1</td>
-                                <td>Ячейка 3.2</td>
-                                <td>Ячейка 3.3</td>
-                                <td>Ячейка 3.4</td>
-                            </tr>
-                            <tr>
-                                <td>Ячейка 4.1</td>
-                                <td colspan="2">Объединенные ячейки 4.2-4.3</td>
-                                <td>Ячейка 4.4</td>
-                            </tr>
-                            <tr>
-                                <td>Ячейка 5.1</td>
-                                <td>Ячейка 5.2</td>
-                                <td>Ячейка 5.3</td>
-                                <td>Ячейка 5.4</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">Объединенные все ячейки строки 6</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
+    <!-- Main Content -->
+    <main class="container my-4">
+        <div class="row">
+            <!-- Links Section -->
+            <section class="col-lg-6 mb-4" id="links">
+                <h2 class="mb-3">Ссылки</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="http://kubsu.ru" class="btn btn-outline-primary btn-sm">Сайт КубГУ</a></li>
+                            <li class="mb-2"><a href="https://kubsu.ru" class="btn btn-outline-secondary btn-sm">Сайт КубГУ 2.0</a></li>
+                            <li class="mb-2">
+                                <a href="https://rutube.ru/" class="d-block">
+                                    <img src="https://avatars.mds.yandex.net/i?id=d619edf8f4dfa225b65228e60debef21_l-5222505-images-thumbs&n=13" 
+                                         class="img-fluid rounded" alt="Rutube">
+                                </a>
+                            </li>
+                            <li class="mb-2"><a href="krich1.html" class="text-decoration-none">Сокращенная ссылка на внутреннюю страницу</a></li>
+                            <li class="mb-2"><a href="krich.html" class="text-decoration-none">Сокращенная ссылка на главную страницу</a></li>
+                            <li class="mb-2"><a href="#fragment-target" class="badge bg-info text-decoration-none">Ссылка на фрагмент</a></li>
+                            <li class="mb-2"><a href="https://www.dota2.com/home?size=500&color=pink&width=500" class="text-decoration-none">Ссылка c 3 параметрами URL</a></li>
+                            <li class="mb-2"><a href="https://moodle.kubsu.ru/course/view.php?id=780" class="text-decoration-none">Cсылка с параметром id в URL</a></li>
+                            <li class="mb-2"><a href="page.html" class="text-decoration-none">Относительная на страницу в текущем каталоге</a></li>
+                            <li class="mb-2"><a href="https://about.google/" class="text-decoration-none">Относительная на страницу в каталоге about</a></li>
+                            <li class="mb-2"><a href="../" class="text-decoration-none">Относительная на страницу в каталоге уровнем выше текущего</a></li>
+                            <li class="mb-2"><a href="/../../" class="text-decoration-none">Относительная на страницу в каталоге двумя уровнями выше текущего</a></li>
+                            <li class="mb-2">Контекстная ссылка в <a href="#" class="text-decoration-none">тексте</a> абзаца</li>
+                            <li class="mb-2"><a href="https://max.ru/?ysclid=mfmx7x45ks578217796#:~:text=Пример" class="text-decoration-none">Cсылка на фрагмент страницы стороннего сайта</a></li>
+                            <li class="mb-2">
+                                <img src="https://static1.srcdn.com/wordpress/wp-content/uploads/2020/04/Split-image-of-Squidward-SpongeBob-and-Mr-Krabs-from-SpongeBob-Squarepants.jpg" 
+                                     class="img-fluid rounded image-map" usemap="#map" alt="SpongeBob Characters">
+                                <map name="map">
+                                    <area shape="rect" alt="SpongeBob" coords="18,50,138,160" href="https://spongebob.fandom.com/wiki/SpongeBob_SquarePants">
+                                    <area shape="rect" alt="Patrick" coords="140,50,255,165" href="https://spongebob.fandom.com/wiki/Patrick_Star">
+                                    <area shape="circle" alt="Squidward" coords="319,150,100" href="https://spongebob.fandom.com/wiki/Squidward_Tentacles">
+                                </map>
+                            </li>
+                            <li class="mb-2"><a href="#" class="text-decoration-none">Ссылка с пустым href (исправлено)</a></li>
+                            <li class="mb-2"><span class="text-muted">http://kubsu.ru (просто текст)</span></li>
+                            <li class="mb-2"><a href="https://example.com" rel="nofollow" class="text-decoration-none">Ссылка, по которой запрещен переход поисковикам</a></li>
+                            <li class="mb-2"><a href="https://example.com" rel="noindex" class="text-decoration-none">Ссылка, запрещенная для индексации</a></li>
+                            <li class="mb-2">
+                                <ol class="list-group">
+                                    <li class="list-group-item"><a href="https://spongebob.fandom.com/wiki/SpongeBob_SquarePants" class="text-decoration-none">SpongeBob</a></li>
+                                    <li class="list-group-item"><a href="https://spongebob.fandom.com/wiki/Patrick_Star" class="text-decoration-none">Patrick</a></li>
+                                    <li class="list-group-item"><a href="https://spongebob.fandom.com/wiki/Squidward_Tentacles" class="text-decoration-none">Squidward</a></li>
+                                </ol>
+                            </li>
+                            <li class="mb-2"><a href="ftp://example.com/file.txt" class="text-decoration-none">FTP ссылка</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-                <section class="table-section" id="table">
-                    <h2>Форма</h2>
-                    <form action="" method="get">
-                        <div class="form-group">
-                            <label for="name">Введите ФИО:</label>
-                            <input type="text" id="name" name="name" placeholder="Иванов Иван Иванович" 
-                                   oninput="this.value=this.value.replace(/[^a-zA-Zа-яА-Я\s]/g,'')" required>
+            <!-- Table Section -->
+            <section class="col-lg-6 mb-4" id="table-section">
+                <h2 class="mb-3">Таблица</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Колонка 1</th>
+                                        <th>Колонка 2</th>
+                                        <th>Колонка 3</th>
+                                        <th>Колонка 4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" class="table-info">Объединенные ячейки 1-2</td>
+                                        <td>Ячейка 1.3</td>
+                                        <td>Ячейка 1.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ячейка 2.1</td>
+                                        <td>Ячейка 2.2</td>
+                                        <td>Ячейка 2.3</td>
+                                        <td>Ячейка 2.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ячейка 3.1</td>
+                                        <td>Ячейка 3.2</td>
+                                        <td>Ячейка 3.3</td>
+                                        <td>Ячейка 3.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ячейка 4.1</td>
+                                        <td colspan="2" class="table-warning">Объединенные ячейки 4.2-4.3</td>
+                                        <td>Ячейка 4.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ячейка 5.1</td>
+                                        <td>Ячейка 5.2</td>
+                                        <td>Ячейка 5.3</td>
+                                        <td>Ячейка 5.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="table-success text-center">Объединенные все ячейки строки 6</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-
-                        <div class="form-group">
-                            <label for="tel">Введите номер телефона:</label>
-                            <input type="tel" name="tel" id="tel" placeholder="+7(...)...-..-.." 
-                                   pattern="[0-9]{10}" minlength="10" maxlength="10"
-                                   oninput="this.value=this.value.replace(/\D/g,'').substring(0,10)" required>
+                        
+                        <!-- Цель для фрагментной ссылки -->
+                        <div id="fragment-target" class="mt-4 p-3 bg-light rounded">
+                            <h4>✅ Это целевой фрагмент страницы!</h4>
+                            <p>Ссылка <code>#fragment-target</code> ведет именно сюда.</p>
                         </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-                        <div class="form-group">
-                            <label for="email">Введите email:</label>
-                            <input type="email" id="email" name="email" placeholder="name@mail.ru" required>
-                        </div>
+        <!-- Calculator Section -->
+        <section class="row mt-4" id="calculator">
+            <div class="col-12">
+                <h2 class="mb-3">Калькулятор стоимости заказа</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="quantity" class="form-label">Количество товара:</label>
+                                <input type="number" class="form-control" id="quantity" min="1" value="1" placeholder="Введите количество">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="date">Введите дату рождения:</label>
-                            <input type="date" id="date" name="date" required>
-                        </div>
-
-                        <div class="form-group">
-                            <fieldset>
-                                <legend>Выберите пол</legend>
-                                <label>
-                                    <input type="radio" name="gender" value="male">
-                                    Мужской
-                                </label>
-                                <label>
-                                    <input type="radio" name="gender" value="female" checked>
-                                    Женский
-                                </label>
-                            </fieldset>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Любимый язык программирования (множественный выбор):</label>
-                            <div class="checkbox-group">
-                                <label>
-                                    <input type="checkbox" name="programming-language" value="cplusplus">
-                                    С++
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="programming-language" value="java">
-                                    Java
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="programming-language" value="csharp">
-                                    C#
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="programming-language" value="javascript">
-                                    JavaScript
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="programming-language" value="python">
-                                    Python
-                                </label>
+                            <div class="col-md-6 mb-3">
+                                <label for="product" class="form-label">Выберите товар:</label>
+                                <select class="form-select" id="product">
+                                    <option value="1500">iPhone 15 Pro - 1500 руб.</option>
+                                    <option value="800">Samsung Galaxy S23 - 800 руб.</option>
+                                    <option value="500">Xiaomi Redmi Note 12 - 500 руб.</option>
+                                    <option value="1200">Google Pixel 7 - 1200 руб.</option>
+                                    <option value="2000">Sony Xperia 1 V - 2000 руб.</option>
+                                </select>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="bio">Многострочное текстовое поле:</label>
-                            <textarea id="bio" name="bio" rows="4"></textarea>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-primary" onclick="calculateTotal()">Рассчитать стоимость</button>
                         </div>
 
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="terms" name="terms" required>
-                                Я подтверждаю, что ознакомлен(а) и согласен(а) с условиями обработки персональных данных
-                            </label>
+                        <div id="calculator-result" class="mt-3 p-3 bg-light rounded" style="display: none;">
+                            <h5 class="mb-0">Стоимость заказа: <span id="totalAmount" class="text-success fw-bold">0</span> руб.</h5>
                         </div>
-
-                        <button type="submit" class="submit-btn">Отправить</button>
-                    </form>
-                </section>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Form Section -->
+        <section class="row mt-4" id="form-section">
+            <div class="col-12">
+                <h2 class="mb-3">Форма</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <form action="#" method="get">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Введите ФИО:</label>
+                                    <input type="text" class="form-control" id="name" name="name" 
+                                           placeholder="Иванов Иван Иванович" 
+                                           oninput="this.value=this.value.replace(/[^a-zA-Zа-яА-Я\s]/g,'')" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="tel" class="form-label">Введите номер телефона:</label>
+                                    <input type="tel" class="form-control" name="tel" id="tel" 
+                                           placeholder="+7(999)999-99-99" 
+                                           pattern="[0-9]{10}" minlength="10" maxlength="10"
+                                           oninput="this.value=this.value.replace(/\D/g,'').substring(0,10)" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Введите email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           placeholder="name@mail.ru" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="date" class="form-label">Введите дату рождения:</label>
+                                    <input type="date" class="form-control" id="date" name="date" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Выберите пол</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="male" value="male">
+                                        <label class="form-check-label" for="male">Мужской</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="female" value="female" checked>
+                                        <label class="form-check-label" for="female">Женский</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Любимый язык программирования:</label>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="language" id="cplusplus" value="cplusplus">
+                                            <label class="form-check-label" for="cplusplus">С++</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="language" id="java" value="java">
+                                            <label class="form-check-label" for="java">Java</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="language" id="csharp" value="csharp">
+                                            <label class="form-check-label" for="csharp">C#</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="language" id="javascript" value="javascript">
+                                            <label class="form-check-label" for="javascript">JavaScript</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="language" id="python" value="python">
+                                            <label class="form-check-label" for="python">Python</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bio" class="form-label">Многострочное текстовое поле:</label>
+                                <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Расскажите о себе..."></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        Я подтверждаю согласие с условиями обработки персональных данных
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Отправить</button>
+                            <button type="reset" class="btn btn-outline-secondary">Очистить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer id="footer">
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-4">
         <div class="container">
-            <p>&copy; Ковган Ларион </p>
+            <p class="mb-0 text-center">&copy; Ковган Ларион</p>
         </div>
     </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function calculateTotal() {
+            // Получаем значения из формы
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const productPrice = parseInt(document.getElementById('product').value);
+            
+            // Проверяем валидность ввода
+            if (isNaN(quantity) || quantity < 1) {
+                alert('Пожалуйста, введите корректное количество товара (не менее 1)');
+                return;
+            }
+            
+            // Вычисляем общую стоимость
+            const totalCost = quantity * productPrice;
+            
+            // Отображаем результат
+            document.getElementById('totalAmount').textContent = totalCost.toLocaleString();
+            document.getElementById('calculator-result').style.display = 'block';
+            
+            // Добавляем анимацию появления результата
+            const resultElement = document.getElementById('calculator-result');
+            resultElement.style.opacity = '0';
+            resultElement.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                resultElement.style.opacity = '1';
+            }, 10);
+        }
+
+        // Добавляем обработчик события на Enter
+        document.getElementById('quantity').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateTotal();
+            }
+        });
+
+        // Добавляем обработчик изменения товара для автоматического пересчета
+        document.getElementById('product').addEventListener('change', function() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            if (quantity > 0 && !isNaN(quantity)) {
+                calculateTotal();
+            }
+        });
+
+        // Автоматический пересчет при изменении количества
+        document.getElementById('quantity').addEventListener('input', function() {
+            const quantity = parseInt(this.value);
+            if (quantity > 0 && !isNaN(quantity)) {
+                calculateTotal();
+            }
+        });
+
+        // Автоматический расчет при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateTotal();
+        });
+    </script>
 </body>
 </html>
-
-
