@@ -190,6 +190,206 @@
             </div>
         </section>
 
+        <!-- Добавьте эту секцию после существующего калькулятора или вместо него -->
+
+<!-- Calculator Section (Задание 6) -->
+<section class="row mt-4" id="calculator-task">
+    <div class="col-12">
+        <h2 class="mb-3">Калькулятор стоимости услуги (Задание 6)</h2>
+        <div class="card">
+            <div class="card-body">
+                <form id="service-calculator">
+                    <!-- Поле для ввода количества -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="service-quantity" class="form-label">Количество:</label>
+                            <input type="number" class="form-control" id="service-quantity" min="1" value="1" required>
+                        </div>
+                    </div>
+
+                    <!-- Выбор типа услуги радиокнопкой -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label">Тип услуги:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="service-type" id="type1" value="basic" checked>
+                                <label class="form-check-label" for="type1">
+                                    Базовая услуга - 1000 руб.
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="service-type" id="type2" value="premium">
+                                <label class="form-check-label" for="type2">
+                                    Премиум услуга - 2000 руб.
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="service-type" id="type3" value="vip">
+                                <label class="form-check-label" for="type3">
+                                    VIP услуга - 3000 руб.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Динамические опции (селект) -->
+                    <div class="row mb-3" id="options-section" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="service-options" class="form-label">Опции услуги:</label>
+                            <select class="form-select" id="service-options">
+                                <option value="1.0">Стандартная опция</option>
+                                <option value="1.2">Расширенная опция (+20%)</option>
+                                <option value="1.5">Профессиональная опция (+50%)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Динамические свойства (чекбокс) -->
+                    <div class="row mb-3" id="properties-section" style="display: none;">
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="service-property">
+                                <label class="form-check-label" for="service-property">
+                                    Дополнительное свойство (+500 руб.)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Результат -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="alert alert-info" id="service-result">
+                                <h5 class="mb-0">Общая стоимость: <span id="service-total">1000</span> руб.</h5>
+                                <small class="text-muted" id="calculation-details">
+                                    Базовая услуга × 1 = 1000 руб.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Базовая цена для каждого типа услуги
+const servicePrices = {
+    basic: 1000,
+    premium: 2000,
+    vip: 3000
+};
+
+// Элементы DOM
+const quantityInput = document.getElementById('service-quantity');
+const serviceTypeRadios = document.querySelectorAll('input[name="service-type"]');
+const optionsSection = document.getElementById('options-section');
+const propertiesSection = document.getElementById('properties-section');
+const serviceOptions = document.getElementById('service-options');
+const serviceProperty = document.getElementById('service-property');
+const serviceTotal = document.getElementById('service-total');
+const calculationDetails = document.getElementById('calculation-details');
+
+// Функция для обновления отображения динамических элементов
+function updateDynamicSections() {
+    const selectedType = document.querySelector('input[name="service-type"]:checked').value;
+    
+    // Сбрасываем значения при смене типа
+    serviceOptions.selectedIndex = 0;
+    serviceProperty.checked = false;
+    
+    // Управляем видимостью секций в зависимости от типа услуги
+    switch(selectedType) {
+        case 'basic':
+            // Первый тип - нет дополнительных опций и свойств
+            optionsSection.style.display = 'none';
+            propertiesSection.style.display = 'none';
+            break;
+        case 'premium':
+            // Второй тип - только опции (селект)
+            optionsSection.style.display = 'block';
+            propertiesSection.style.display = 'none';
+            break;
+        case 'vip':
+            // Третий тип - только свойство (чекбокс)
+            optionsSection.style.display = 'none';
+            propertiesSection.style.display = 'block';
+            break;
+    }
+    
+    // Пересчитываем стоимость
+    calculateServiceCost();
+}
+
+// Функция расчета стоимости
+function calculateServiceCost() {
+    const quantity = parseInt(quantityInput.value) || 1;
+    const selectedType = document.querySelector('input[name="service-type"]:checked').value;
+    
+    let basePrice = servicePrices[selectedType];
+    let multiplier = 1;
+    let additionalCost = 0;
+    let details = [];
+    
+    // Расчет базовой стоимости
+    let total = basePrice * quantity;
+    details.push(`${getServiceTypeName(selectedType)} × ${quantity} = ${basePrice * quantity} руб.`);
+    
+    // Учитываем опции для premium типа
+    if (selectedType === 'premium' && optionsSection.style.display === 'block') {
+        multiplier = parseFloat(serviceOptions.value);
+        total *= multiplier;
+        details.push(`Множитель опции: ${multiplier}`);
+    }
+    
+    // Учитываем свойства для vip типа
+    if (selectedType === 'vip' && propertiesSection.style.display === 'block' && serviceProperty.checked) {
+        additionalCost = 500 * quantity;
+        total += additionalCost;
+        details.push(`Дополнительное свойство: +${additionalCost} руб.`);
+    }
+    
+    // Обновляем отображение
+    serviceTotal.textContent = total.toLocaleString();
+    calculationDetails.textContent = details.join(' | ');
+}
+
+// Вспомогательная функция для получения названия типа услуги
+function getServiceTypeName(type) {
+    const names = {
+        basic: 'Базовая услуга',
+        premium: 'Премиум услуга',
+        vip: 'VIP услуга'
+    };
+    return names[type];
+}
+
+// Инициализация событий
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработчики для радиокнопок
+    serviceTypeRadios.forEach(radio => {
+        radio.addEventListener('change', updateDynamicSections);
+    });
+    
+    // Обработчики для динамических элементов
+    quantityInput.addEventListener('input', calculateServiceCost);
+    serviceOptions.addEventListener('change', calculateServiceCost);
+    serviceProperty.addEventListener('change', calculateServiceCost);
+    
+    // Инициализация при загрузке
+    updateDynamicSections();
+});
+
+// Валидация ввода количества
+quantityInput.addEventListener('blur', function() {
+    if (this.value < 1) {
+        this.value = 1;
+        calculateServiceCost();
+    }
+});
+</script>
+
         <!-- Form Section -->
         <section class="row mt-4" id="form-section">
             <div class="col-12">
@@ -348,6 +548,7 @@
     </script>
 </body>
 </html>
+
 
 
 
