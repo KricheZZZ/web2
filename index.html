@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +8,53 @@
     <style>
         .logo { height: 50px; }
         .image-map { max-width: 100%; height: auto; }
+        
+        /* Стили для попапа формы */
+        .feedback-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1050;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feedback-popup.active {
+            display: flex;
+        }
+        
+        .feedback-form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        @media (max-width: 576px) {
+            .feedback-form-container {
+                width: 95%;
+                height: 95vh;
+                max-height: 95vh;
+                margin: 10px;
+            }
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -36,6 +82,7 @@
                     <li class="nav-item"><a class="nav-link text-white" href="#">Спать</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#fragment-target">Фрагмент</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#calculator">Калькулятор</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#" id="feedback-btn">Обратная связь</a></li>
                 </ul>
             </div>
         </div>
@@ -189,218 +236,6 @@
                 </div>
             </div>
         </section>
- <!-- Calculator Section (Задание 6) -->
-<section class="row mt-4" id="calculator-task">
-    <div class="col-12">
-        <h2 class="mb-3">Калькулятор стоимости фотосессии</h2>
-        <div class="card">
-            <div class="card-body">
-                <form id="service-calculator">
-                    <!-- Поле для ввода количества -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="service-quantity" class="form-label">Количество часов:</label>
-                            <input type="number" class="form-control" id="service-quantity" min="1" value="1" required>
-                            <div class="form-text">Минимальное количество: 1 час</div>
-                        </div>
-                    </div>
-
-                    <!-- Выбор типа услуги радиокнопкой -->
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <label class="form-label">Тип фотосессии:</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="service-type" id="type1" value="basic" checked>
-                                <label class="form-check-label" for="type1">
-                                    Индивидуальная фотосессия - 1500 руб./час
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="service-type" id="type2" value="premium">
-                                <label class="form-check-label" for="type2">
-                                    Семейная фотосессия - 2500 руб./час
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="service-type" id="type3" value="vip">
-                                <label class="form-check-label" for="type3">
-                                    Свадебная фотосессия - 4000 руб./час
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Динамические опции (селект) -->
-                    <div class="row mb-3" id="options-section" style="display: none;">
-                        <div class="col-md-6">
-                            <label for="service-options" class="form-label">Дополнительные опции:</label>
-                            <select class="form-select" id="service-options">
-                                <option value="1.0">Без дополнительных опций</option>
-                                <option value="1.2">Профессиональный визажист (+20%)</option>
-                                <option value="1.3">Стилист + визажист (+30%)</option>
-                                <option value="1.5">Полный образ (+50%)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Динамические свойства (чекбокс) -->
-                    <div class="row mb-3" id="properties-section" style="display: none;">
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="service-property">
-                                <label class="form-check-label" for="service-property">
-                                    Срочная обработка фото (+1000 руб./час)
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Результат -->
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="alert alert-info" id="service-result">
-                                <h5 class="mb-0">Общая стоимость: <span id="service-total">1500</span> руб.</h5>
-                                <small class="text-muted" id="calculation-details">
-                                    Индивидуальная фотосессия × 1 час = 1500 руб.
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script>
-// Базовая цена для каждого типа фотосессии
-const servicePrices = {
-    basic: 1500,
-    premium: 2500,
-    vip: 4000
-};
-
-// Элементы DOM
-const quantityInput = document.getElementById('service-quantity');
-const serviceTypeRadios = document.querySelectorAll('input[name="service-type"]');
-const optionsSection = document.getElementById('options-section');
-const propertiesSection = document.getElementById('properties-section');
-const serviceOptions = document.getElementById('service-options');
-const serviceProperty = document.getElementById('service-property');
-const serviceTotal = document.getElementById('service-total');
-const calculationDetails = document.getElementById('calculation-details');
-
-// Функция для обновления отображения динамических элементов
-function updateDynamicSections() {
-    const selectedType = document.querySelector('input[name="service-type"]:checked').value;
-    
-    // Сбрасываем значения при смене типа
-    serviceOptions.selectedIndex = 0;
-    serviceProperty.checked = false;
-    
-    // Управляем видимостью секций в зависимости от типа услуги
-    switch(selectedType) {
-        case 'basic':
-            // Индивидуальная фотосессия - нет дополнительных опций и свойств
-            optionsSection.style.display = 'none';
-            propertiesSection.style.display = 'none';
-            break;
-        case 'premium':
-            // Семейная фотосессия - только опции (селект)
-            optionsSection.style.display = 'block';
-            propertiesSection.style.display = 'none';
-            break;
-        case 'vip':
-            // Свадебная фотосессия - только свойство (чекбокс)
-            optionsSection.style.display = 'none';
-            propertiesSection.style.display = 'block';
-            break;
-    }
-    
-    // Пересчитываем стоимость
-    calculateServiceCost();
-}
-
-// Функция расчета стоимости
-function calculateServiceCost() {
-    let quantity = parseInt(quantityInput.value);
-    
-    // Если поле пустое или некорректное значение, используем 1 для расчета, но не меняем значение в поле
-    const displayQuantity = isNaN(quantity) || quantity < 1 ? 1 : quantity;
-    
-    const selectedType = document.querySelector('input[name="service-type"]:checked').value;
-    
-    let basePrice = servicePrices[selectedType];
-    let multiplier = 1;
-    let additionalCost = 0;
-    let details = [];
-    
-    // Расчет базовой стоимости
-    let total = basePrice * displayQuantity;
-    details.push(`${getServiceTypeName(selectedType)} × ${displayQuantity} час = ${basePrice * displayQuantity} руб.`);
-    
-    // Учитываем опции для premium типа
-    if (selectedType === 'premium' && optionsSection.style.display === 'block') {
-        multiplier = parseFloat(serviceOptions.value);
-        total *= multiplier;
-        const optionText = serviceOptions.options[serviceOptions.selectedIndex].text;
-        details.push(`${optionText}`);
-    }
-    
-    // Учитываем свойства для vip типа
-    if (selectedType === 'vip' && propertiesSection.style.display === 'block' && serviceProperty.checked) {
-        additionalCost = 1000 * displayQuantity;
-        total += additionalCost;
-        details.push(`Срочная обработка: +${additionalCost} руб.`);
-    }
-    
-    // Обновляем отображение
-    serviceTotal.textContent = total.toLocaleString();
-    calculationDetails.textContent = details.join(' | ');
-}
-
-// Вспомогательная функция для получения названия типа услуги
-function getServiceTypeName(type) {
-    const names = {
-        basic: 'Индивидуальная фотосессия',
-        premium: 'Семейная фотосессия',
-        vip: 'Свадебная фотосессия'
-    };
-    return names[type];
-}
-
-// Инициализация событий
-document.addEventListener('DOMContentLoaded', function() {
-    // Обработчики для радиокнопок
-    serviceTypeRadios.forEach(radio => {
-        radio.addEventListener('change', updateDynamicSections);
-    });
-    
-    // Обработчики для динамических элементов
-    quantityInput.addEventListener('input', calculateServiceCost);
-    serviceOptions.addEventListener('change', calculateServiceCost);
-    serviceProperty.addEventListener('change', calculateServiceCost);
-    
-    // Убираем все ограничения на ввод - можно свободно редактировать
-    quantityInput.addEventListener('keydown', function(e) {
-        // Разрешаем все клавиши
-        return true;
-    });
-    
-    // Только при потере фокуса проверяем и корректируем если нужно
-    quantityInput.addEventListener('blur', function() {
-        let value = parseInt(this.value);
-        if (isNaN(value) || value < 1) {
-            this.value = 1;
-        }
-        calculateServiceCost();
-    });
-    
-    // Инициализация при загрузке
-    updateDynamicSections();
-});
-</script>
-    </script>
 
         <!-- Form Section -->
         <section class="row mt-4" id="form-section">
@@ -515,29 +350,77 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </footer>
 
+    <!-- Попап формы обратной связи -->
+    <div class="feedback-popup" id="feedbackPopup">
+        <div class="feedback-form-container">
+            <button type="button" class="close-btn" id="closeFeedback">&times;</button>
+            <h3 class="mb-4">Форма обратной связи</h3>
+            
+            <form id="feedbackForm">
+                <div class="mb-3">
+                    <label for="feedbackName" class="form-label">ФИО *</label>
+                    <input type="text" class="form-control" id="feedbackName" name="name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="feedbackEmail" class="form-label">Email *</label>
+                    <input type="email" class="form-control" id="feedbackEmail" name="email" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="feedbackPhone" class="form-label">Телефон *</label>
+                    <input type="tel" class="form-control" id="feedbackPhone" name="phone" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="feedbackOrganization" class="form-label">Организация</label>
+                    <input type="text" class="form-control" id="feedbackOrganization" name="organization">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="feedbackMessage" class="form-label">Сообщение *</label>
+                    <textarea class="form-control" id="feedbackMessage" name="message" rows="4" required></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="feedbackAgreement" name="agreement" required>
+                        <label class="form-check-label" for="feedbackAgreement">
+                            Согласен с политикой обработки персональных данных *
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="feedbackMessageAlert" class="alert" style="display: none;"></div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary" id="submitFeedback">
+                        Отправить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
+    <script>
+        // Калькулятор стоимости заказа
         function calculateTotal() {
-            // Получаем значения из формы
             const quantity = parseInt(document.getElementById('quantity').value);
             const productPrice = parseInt(document.getElementById('product').value);
             
-            // Проверяем валидность ввода
             if (isNaN(quantity) || quantity < 1) {
                 alert('Пожалуйста, введите корректное количество товара (не менее 1)');
                 return;
             }
             
-            // Вычисляем общую стоимость
             const totalCost = quantity * productPrice;
             
-            // Отображаем результат
             document.getElementById('totalAmount').textContent = totalCost.toLocaleString();
             document.getElementById('calculator-result').style.display = 'block';
             
-            // Добавляем анимацию появления результата
             const resultElement = document.getElementById('calculator-result');
             resultElement.style.opacity = '0';
             resultElement.style.transition = 'opacity 0.5s';
@@ -546,20 +429,167 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 10);
         }
 
-        // Добавляем обработчик события на Enter
         document.getElementById('quantity').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 calculateTotal();
             }
         });
 
-        // Скрываем результат при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calculator-result').style.display = 'none';
+        });
+
+        // Форма обратной связи (Задание 8)
+        const feedbackPopup = document.getElementById('feedbackPopup');
+        const feedbackBtn = document.getElementById('feedback-btn');
+        const closeFeedback = document.getElementById('closeFeedback');
+        const feedbackForm = document.getElementById('feedbackForm');
+        const feedbackMessageAlert = document.getElementById('feedbackMessageAlert');
+
+        // Ключ для LocalStorage
+        const FEEDBACK_STORAGE_KEY = 'feedback_form_data';
+
+        // Функция для сохранения данных формы
+        function saveFormData() {
+            const formData = {
+                name: document.getElementById('feedbackName').value,
+                email: document.getElementById('feedbackEmail').value,
+                phone: document.getElementById('feedbackPhone').value,
+                organization: document.getElementById('feedbackOrganization').value,
+                message: document.getElementById('feedbackMessage').value,
+                agreement: document.getElementById('feedbackAgreement').checked
+            };
+            localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(formData));
+        }
+
+        // Функция для загрузки данных формы
+        function loadFormData() {
+            const savedData = localStorage.getItem(FEEDBACK_STORAGE_KEY);
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                document.getElementById('feedbackName').value = formData.name || '';
+                document.getElementById('feedbackEmail').value = formData.email || '';
+                document.getElementById('feedbackPhone').value = formData.phone || '';
+                document.getElementById('feedbackOrganization').value = formData.organization || '';
+                document.getElementById('feedbackMessage').value = formData.message || '';
+                document.getElementById('feedbackAgreement').checked = formData.agreement || false;
+            }
+        }
+
+        // Функция для очистки данных формы
+        function clearFormData() {
+            localStorage.removeItem(FEEDBACK_STORAGE_KEY);
+            feedbackForm.reset();
+        }
+
+        // Показать попап
+        function showFeedbackPopup() {
+            feedbackPopup.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Блокируем прокрутку основного контента
+            history.pushState({ feedbackOpen: true }, '', '#feedback');
+            loadFormData();
+        }
+
+        // Скрыть попап
+        function hideFeedbackPopup() {
+            feedbackPopup.classList.remove('active');
+            document.body.style.overflow = ''; // Восстанавливаем прокрутку
+            history.back();
+        }
+
+        // Обработчики событий
+        feedbackBtn.addEventListener('click', showFeedbackPopup);
+        closeFeedback.addEventListener('click', hideFeedbackPopup);
+
+        // Закрытие по клику на фон
+        feedbackPopup.addEventListener('click', function(e) {
+            if (e.target === feedbackPopup) {
+                hideFeedbackPopup();
+            }
+        });
+
+        // Обработка нажатия кнопки "Назад" в браузере
+        window.addEventListener('popstate', function(e) {
+            if (feedbackPopup.classList.contains('active')) {
+                hideFeedbackPopup();
+            }
+        });
+
+        // Сохранение данных при вводе
+        const formInputs = feedbackForm.querySelectorAll('input, textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('input', saveFormData);
+        });
+        document.getElementById('feedbackAgreement').addEventListener('change', saveFormData);
+
+        // Отправка формы
+        feedbackForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitFeedback');
+            const originalText = submitBtn.textContent;
+            
+            // Показываем индикатор загрузки
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправка...';
+            
+            try {
+                const formData = new FormData(feedbackForm);
+                const data = Object.fromEntries(formData);
+                
+                // Отправка на сервер (используем Formcarry)
+                const response = await fetch('https://formcarry.com/s/ВАШ_ID_ФОРМЫ', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.code === 200) {
+                    showMessage('Сообщение успешно отправлено!', 'success');
+                    clearFormData();
+                    setTimeout(hideFeedbackPopup, 2000);
+                } else {
+                    throw new Error(result.message || 'Ошибка отправки');
+                }
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showMessage('Ошибка при отправке сообщения. Попробуйте еще раз.', 'danger');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+
+        // Функция для показа сообщений
+        function showMessage(message, type) {
+            feedbackMessageAlert.textContent = message;
+            feedbackMessageAlert.className = `alert alert-${type}`;
+            feedbackMessageAlert.style.display = 'block';
+            
+            // Автоматическое скрытие сообщения через 5 секунд
+            setTimeout(() => {
+                feedbackMessageAlert.style.display = 'none';
+            }, 5000);
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, если в URL есть хэш #feedback, показываем форму
+            if (window.location.hash === '#feedback') {
+                showFeedbackPopup();
+            }
         });
     </script>
 </body>
 </html>
+
+ 
 
 
 
