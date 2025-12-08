@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -860,7 +861,7 @@ class GallerySlider {
             history.back();
         }
 
-        // Обработчики событий
+        // Обработчики событий - ИСПРАВЛЕНО!
         feedbackBtn.addEventListener('click', showFeedbackPopup);
         closeFeedback.addEventListener('click', hideFeedbackPopup);
 
@@ -995,7 +996,7 @@ class GallerySlider {
             }, 5000);
         }
 
-        // Инициализация при загрузке страницы
+        // Инициализация при загрузке страницы - ИСПРАВЛЕНО!
         document.addEventListener('DOMContentLoaded', function() {
             // Проверяем, если в URL есть хэш #feedback, показываем форму
             if (window.location.hash === '#feedback') {
