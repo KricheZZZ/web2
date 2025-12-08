@@ -621,156 +621,392 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-// Gallery Slider (Задание 7)
-class GallerySlider {
-    constructor() {
-        // 8 красивых фото Нью-Йорка с надежных источников
-        this.images = [
-            'https://upload.wikimedia.org/wikipedia/commons/c/c7/Empire_State_Building_from_the_Top_of_the_Rock.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Lady_Liberty_under_a_blue_sky_%28cropped%29.jpg/800px-Lady_Liberty_under_a_blue_sky_%28cropped%29.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/b/b8/2024-06-15_09_53_40_View_from_the_middle_of_the_Brooklyn_Bridge_looking_northwest_along_the_pedestrian_walkway_in_Manhattan%2C_New_York_City%2C_New_York.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/New_york_times_square-terabass.jpg/250px-New_york_times_square-terabass.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Global_Citizen_Festival_Central_Park_New_York_City_from_NYonAir_%2815351915006%29.jpg/330px-Global_Citizen_Festival_Central_Park_New_York_City_from_NYonAir_%2815351915006%29.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/800px-Empire_State_Building_%28aerial_view%29.jpg',
-            'https://upload.wikimedia.org/wikipedia/ru/thumb/2/21/%D0%90%D1%82%D0%B0%D0%BA%D1%83%D1%8E%D1%89%D0%B8%D0%B9_%D0%B1%D1%8B%D0%BA.jpg/280px-%D0%90%D1%82%D0%B0%D0%BA%D1%83%D1%8E%D1%89%D0%B8%D0%B9_%D0%B1%D1%8B%D0%BA.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Radio_City_Music_Hall_Panorama.jpg/330px-Radio_City_Music_Hall_Panorama.jpg'
-        ];
+        // ==================== ФОРМА ОБРАТНОЙ СВЯЗИ ====================
         
-        this.imageTitles = [
-            "Эмпайр-стейт-билдинг",
-            "Статуя Свободы",
-            "Бруклинский мост",
-            "Таймс-сквер",
-            "Центральный парк",
-            "Эмпайр-стейт-билдинг (вид сверху)",
-            "Уолл-стрит (Бык)",
-            "Радио-сити мьюзик-холл"
-        ];
-        
-        this.currentPage = 0;
-        this.totalPages = 0;
-        this.itemsPerPage = 3;
-        
-        this.track = document.getElementById('galleryTrack');
-        this.prevArrow = document.getElementById('prevArrow');
-        this.nextArrow = document.getElementById('nextArrow');
-        this.pager = document.getElementById('galleryPager');
-        
-        this.init();
-        this.setupEventListeners();
-        this.updateItemsPerPage();
-        window.addEventListener('resize', () => this.updateItemsPerPage());
-    }
-    
-    init() {
-        // Очищаем трек на случай переинициализации
-        this.track.innerHTML = '';
-        
-        // Create gallery items
-        this.images.forEach((src, index) => {
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            item.innerHTML = `
-                <img src="${src}" alt="${this.imageTitles[index]}" class="img-fluid" loading="lazy">
-                <div class="p-2 text-center">
-                    <small class="text-muted">${this.imageTitles[index]}</small>
-                </div>
-            `;
-            this.track.appendChild(item);
-        });
-        
-        this.updateGallery();
-    }
-    
-    updateItemsPerPage() {
-        // Check if mobile
-        if (window.innerWidth <= 768) {
-            this.itemsPerPage = 1;
-        } else {
-            this.itemsPerPage = 3;
-        }
-        this.updateGallery();
-    }
-    
-    updateGallery() {
-        const totalItems = this.images.length;
-        this.totalPages = Math.ceil(totalItems / this.itemsPerPage);
-        
-        // Update track position
-        const trackWidth = this.track.offsetWidth;
-        const itemWidth = trackWidth / this.itemsPerPage;
-        const offset = -this.currentPage * itemWidth * this.itemsPerPage;
-        this.track.style.transform = `translateX(${offset}px)`;
-        
-        // Update arrows
-        this.prevArrow.disabled = this.currentPage === 0;
-        this.nextArrow.disabled = this.currentPage === this.totalPages - 1;
-        
-        // Update pager
-        this.updatePager();
-    }
-    
-    updatePager() {
-        this.pager.innerHTML = '';
-        
-        // Create page dots
-        for (let i = 0; i < this.totalPages; i++) {
-            const dot = document.createElement('button');
-            dot.className = `pager-dot ${i === this.currentPage ? 'active' : ''}`;
-            dot.setAttribute('aria-label', `Страница ${i + 1}`);
-            dot.addEventListener('click', () => this.goToPage(i));
-            this.pager.appendChild(dot);
-        }
-        
-        // Add page text
-        const pageText = document.createElement('div');
-        pageText.className = 'pager-text';
-        pageText.textContent = `Страница ${this.currentPage + 1} из ${this.totalPages}`;
-        this.pager.appendChild(pageText);
-    }
-    
-    goToPage(page) {
-        if (page >= 0 && page < this.totalPages) {
-            this.currentPage = page;
-            this.updateGallery();
-        }
-    }
-    
-    nextPage() {
-        if (this.currentPage < this.totalPages - 1) {
-            this.currentPage++;
-            this.updateGallery();
-        }
-    }
-    
-    prevPage() {
-        if (this.currentPage > 0) {
-            this.currentPage--;
-            this.updateGallery();
-        }
-    }
-    
-    setupEventListeners() {
-        this.prevArrow.addEventListener('click', () => this.prevPage());
-        this.nextArrow.addEventListener('click', () => this.nextPage());
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                this.prevPage();
-            } else if (e.key === 'ArrowRight') {
-                this.nextPage();
+        // Ждем полной загрузки DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM загружен, инициализируем форму обратной связи...');
+            
+            // Инициализация переменных
+            const feedbackPopup = document.getElementById('feedbackPopup');
+            const feedbackBtn = document.getElementById('feedback-btn');
+            const closeFeedback = document.getElementById('closeFeedback');
+            const feedbackForm = document.getElementById('feedbackForm');
+            const feedbackMessageAlert = document.getElementById('feedbackMessageAlert');
+            
+            console.log('Элементы найдены:', {
+                feedbackPopup: !!feedbackPopup,
+                feedbackBtn: !!feedbackBtn,
+                closeFeedback: !!closeFeedback,
+                feedbackForm: !!feedbackForm
+            });
+            
+            // Ключ для LocalStorage
+            const FEEDBACK_STORAGE_KEY = 'feedback_form_data';
+            
+            // ==================== ФУНКЦИИ ====================
+            
+            // Функция для сохранения данных формы
+            function saveFormData() {
+                try {
+                    const formData = {
+                        name: document.getElementById('feedbackName').value,
+                        email: document.getElementById('feedbackEmail').value,
+                        phone: document.getElementById('feedbackPhone').value,
+                        organization: document.getElementById('feedbackOrganization').value,
+                        message: document.getElementById('feedbackMessage').value,
+                        agreement: document.getElementById('feedbackAgreement').checked
+                    };
+                    localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(formData));
+                    console.log('Данные сохранены в LocalStorage');
+                } catch (e) {
+                    console.error('Ошибка при сохранении в LocalStorage:', e);
+                }
             }
+            
+            // Функция для загрузки данных формы
+            function loadFormData() {
+                try {
+                    const savedData = localStorage.getItem(FEEDBACK_STORAGE_KEY);
+                    if (savedData) {
+                        const formData = JSON.parse(savedData);
+                        document.getElementById('feedbackName').value = formData.name || '';
+                        document.getElementById('feedbackEmail').value = formData.email || '';
+                        document.getElementById('feedbackPhone').value = formData.phone || '';
+                        document.getElementById('feedbackOrganization').value = formData.organization || '';
+                        document.getElementById('feedbackMessage').value = formData.message || '';
+                        document.getElementById('feedbackAgreement').checked = formData.agreement || false;
+                        console.log('Данные загружены из LocalStorage');
+                    }
+                } catch (e) {
+                    console.error('Ошибка при загрузке из LocalStorage:', e);
+                }
+            }
+            
+            // Функция для очистки данных формы
+            function clearFormData() {
+                try {
+                    localStorage.removeItem(FEEDBACK_STORAGE_KEY);
+                    feedbackForm.reset();
+                    console.log('Данные очищены');
+                } catch (e) {
+                    console.error('Ошибка при очистке данных:', e);
+                }
+            }
+            
+            // Показать попап
+            function showFeedbackPopup() {
+                console.log('Показываем попап формы...');
+                if (!feedbackPopup) {
+                    console.error('Попап не найден!');
+                    return;
+                }
+                
+                feedbackPopup.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Используем History API
+                if (window.history && window.history.pushState) {
+                    try {
+                        history.pushState({ feedbackOpen: true }, '', '#feedback');
+                        console.log('URL изменен через History API');
+                    } catch (e) {
+                        console.error('Ошибка History API:', e);
+                        window.location.hash = '#feedback';
+                    }
+                } else {
+                    window.location.hash = '#feedback';
+                }
+                
+                loadFormData();
+            }
+            
+            // Скрыть попап
+            function hideFeedbackPopup() {
+                console.log('Скрываем попап формы...');
+                if (!feedbackPopup) return;
+                
+                feedbackPopup.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Используем History API
+                if (window.history && window.history.back) {
+                    try {
+                        history.back();
+                    } catch (e) {
+                        console.error('Ошибка History API back:', e);
+                        // Убираем хэш вручную
+                        if (window.location.hash === '#feedback') {
+                            history.replaceState(null, '', window.location.pathname + window.location.search);
+                        }
+                    }
+                }
+            }
+            
+            // Функция для показа сообщений
+            function showMessage(message, type) {
+                if (!feedbackMessageAlert) return;
+                
+                feedbackMessageAlert.textContent = message;
+                feedbackMessageAlert.className = `alert alert-${type}`;
+                feedbackMessageAlert.style.display = 'block';
+                
+                setTimeout(() => {
+                    feedbackMessageAlert.style.display = 'none';
+                }, 5000);
+            }
+            
+            // ==================== НАСТРОЙКА СОБЫТИЙ ====================
+            
+            // Открытие формы при клике на кнопку
+            if (feedbackBtn) {
+                console.log('Настраиваем клик на кнопку обратной связи...');
+                feedbackBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Клик по кнопке обратной связи!');
+                    showFeedbackPopup();
+                });
+            } else {
+                console.error('Кнопка обратной связи не найдена! Проверьте id="feedback-btn"');
+            }
+            
+            // Закрытие формы
+            if (closeFeedback) {
+                closeFeedback.addEventListener('click', hideFeedbackPopup);
+            }
+            
+            // Закрытие по клику на фон
+            if (feedbackPopup) {
+                feedbackPopup.addEventListener('click', function(e) {
+                    if (e.target === feedbackPopup) {
+                        hideFeedbackPopup();
+                    }
+                });
+            }
+            
+            // Обработка нажатия кнопки "Назад"
+            window.addEventListener('popstate', function(e) {
+                console.log('popstate событие', window.location.hash);
+                if (feedbackPopup && feedbackPopup.classList.contains('active')) {
+                    hideFeedbackPopup();
+                }
+            });
+            
+            // Сохранение данных при вводе
+            const formInputs = feedbackForm ? feedbackForm.querySelectorAll('input, textarea') : [];
+            formInputs.forEach(input => {
+                input.addEventListener('input', saveFormData);
+            });
+            
+            const agreementCheckbox = document.getElementById('feedbackAgreement');
+            if (agreementCheckbox) {
+                agreementCheckbox.addEventListener('change', saveFormData);
+            }
+            
+            // Отправка формы
+            if (feedbackForm) {
+                feedbackForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    console.log('Отправка формы...');
+                    
+                    const submitBtn = document.getElementById('submitFeedback');
+                    const originalText = submitBtn ? submitBtn.textContent : 'Отправить';
+                    
+                    // Показываем индикатор загрузки
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Отправка...';
+                    }
+                    
+                    try {
+                        // Получаем данные формы
+                        const formData = {
+                            name: document.getElementById('feedbackName').value,
+                            email: document.getElementById('feedbackEmail').value,
+                            phone: document.getElementById('feedbackPhone').value,
+                            organization: document.getElementById('feedbackOrganization').value || 'Не указана',
+                            message: document.getElementById('feedbackMessage').value,
+                            agreement: document.getElementById('feedbackAgreement').checked,
+                            timestamp: new Date().toISOString(),
+                            source: 'krichezzz.github.io/web2/'
+                        };
+                        
+                        console.log('Отправляем данные:', formData);
+                        
+                        // Эмуляция отправки (для тестирования)
+                        // В реальном проекте замените на реальный URL
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        
+                        // Имитируем успешную отправку
+                        showMessage('Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.', 'success');
+                        clearFormData();
+                        
+                        setTimeout(() => {
+                            hideFeedbackPopup();
+                        }, 3000);
+                        
+                    } catch (error) {
+                        console.error('Ошибка отправки формы:', error);
+                        showMessage('Ошибка при отправке сообщения. Попробуйте еще раз позже.', 'danger');
+                    } finally {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalText;
+                        }
+                    }
+                });
+            }
+            
+            // Проверяем хэш при загрузке
+            if (window.location.hash === '#feedback') {
+                console.log('Обнаружен хэш #feedback, открываем форму...');
+                // Небольшая задержка для гарантии, что все загружено
+                setTimeout(showFeedbackPopup, 100);
+            }
+            
+            console.log('Форма обратной связи инициализирована');
         });
-    }
-}
+        
+        // ==================== ГАЛЕРЕЯ ====================
+        class GallerySlider {
+            constructor() {
+                this.images = [
+                    'https://upload.wikimedia.org/wikipedia/commons/c/c7/Empire_State_Building_from_the_Top_of_the_Rock.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Lady_Liberty_under_a_blue_sky_%28cropped%29.jpg/800px-Lady_Liberty_under_a_blue_sky_%28cropped%29.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/b/b8/2024-06-15_09_53_40_View_from_the_middle_of_the_Brooklyn_Bridge_looking_northwest_along_the_pedestrian_walkway_in_Manhattan%2C_New_York_City%2C_New_York.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/New_york_times_square-terabass.jpg/250px-New_york_times_square-terabass.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Global_Citizen_Festival_Central_Park_New_York_City_from_NYonAir_%2815351915006%29.jpg/330px-Global_Citizen_Festival_Central_Park_New_York_City_from_NYonAir_%2815351915006%29.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/800px-Empire_State_Building_%28aerial_view%29.jpg',
+                    'https://upload.wikimedia.org/wikipedia/ru/thumb/2/21/%D0%90%D1%82%D0%B0%D0%BA%D1%83%D1%8E%D1%89%D0%B8%D0%B9_%D0%B1%D1%8B%D0%BA.jpg/280px-%D0%90%D1%82%D0%B0%D0%BA%D1%83%D1%8E%D1%89%D0%B8%D0%B9_%D0%B1%D1%8B%D0%BA.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Radio_City_Music_Hall_Panorama.jpg/330px-Radio_City_Music_Hall_Panorama.jpg'
+                ];
+                
+                this.imageTitles = [
+                    "Эмпайр-стейт-билдинг",
+                    "Статуя Свободы",
+                    "Бруклинский мост",
+                    "Таймс-сквер",
+                    "Центральный парк",
+                    "Эмпайр-стейт-билдинг (вид сверху)",
+                    "Уолл-стрит (Бык)",
+                    "Радио-сити мьюзик-холл"
+                ];
+                
+                this.currentPage = 0;
+                this.totalPages = 0;
+                this.itemsPerPage = 3;
+                
+                this.track = document.getElementById('galleryTrack');
+                this.prevArrow = document.getElementById('prevArrow');
+                this.nextArrow = document.getElementById('nextArrow');
+                this.pager = document.getElementById('galleryPager');
+                
+                this.init();
+                this.setupEventListeners();
+                this.updateItemsPerPage();
+                window.addEventListener('resize', () => this.updateItemsPerPage());
+            }
+            
+            init() {
+                this.track.innerHTML = '';
+                
+                this.images.forEach((src, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `
+                        <img src="${src}" alt="${this.imageTitles[index]}" class="img-fluid" loading="lazy">
+                        <div class="p-2 text-center">
+                            <small class="text-muted">${this.imageTitles[index]}</small>
+                        </div>
+                    `;
+                    this.track.appendChild(item);
+                });
+                
+                this.updateGallery();
+            }
+            
+            updateItemsPerPage() {
+                if (window.innerWidth <= 768) {
+                    this.itemsPerPage = 1;
+                } else {
+                    this.itemsPerPage = 3;
+                }
+                this.updateGallery();
+            }
+            
+            updateGallery() {
+                const totalItems = this.images.length;
+                this.totalPages = Math.ceil(totalItems / this.itemsPerPage);
+                
+                const trackWidth = this.track.offsetWidth;
+                const itemWidth = trackWidth / this.itemsPerPage;
+                const offset = -this.currentPage * itemWidth * this.itemsPerPage;
+                this.track.style.transform = `translateX(${offset}px)`;
+                
+                this.prevArrow.disabled = this.currentPage === 0;
+                this.nextArrow.disabled = this.currentPage === this.totalPages - 1;
+                
+                this.updatePager();
+            }
+            
+            updatePager() {
+                this.pager.innerHTML = '';
+                
+                for (let i = 0; i < this.totalPages; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = `pager-dot ${i === this.currentPage ? 'active' : ''}`;
+                    dot.setAttribute('aria-label', `Страница ${i + 1}`);
+                    dot.addEventListener('click', () => this.goToPage(i));
+                    this.pager.appendChild(dot);
+                }
+                
+                const pageText = document.createElement('div');
+                pageText.className = 'pager-text';
+                pageText.textContent = `Страница ${this.currentPage + 1} из ${this.totalPages}`;
+                this.pager.appendChild(pageText);
+            }
+            
+            goToPage(page) {
+                if (page >= 0 && page < this.totalPages) {
+                    this.currentPage = page;
+                    this.updateGallery();
+                }
+            }
+            
+            nextPage() {
+                if (this.currentPage < this.totalPages - 1) {
+                    this.currentPage++;
+                    this.updateGallery();
+                }
+            }
+            
+            prevPage() {
+                if (this.currentPage > 0) {
+                    this.currentPage--;
+                    this.updateGallery();
+                }
+            }
+            
+            setupEventListeners() {
+                this.prevArrow.addEventListener('click', () => this.prevPage());
+                this.nextArrow.addEventListener('click', () => this.nextPage());
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        this.prevPage();
+                    } else if (e.key === 'ArrowRight') {
+                        this.nextPage();
+                    }
+                });
+            }
+        }
 
-        // Инициализация галереи
+        // Инициализация галереи после загрузки DOM
         document.addEventListener('DOMContentLoaded', function() {
             new GallerySlider();
         });
 
-        // Калькулятор стоимости заказа
+        // ==================== КАЛЬКУЛЯТОР ====================
         function calculateTotal() {
             const quantity = parseInt(document.getElementById('quantity').value);
             const productPrice = parseInt(document.getElementById('product').value);
@@ -801,223 +1037,6 @@ class GallerySlider {
 
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('calculator-result').style.display = 'none';
-        });
-
-        // Форма обратной связи (Задание 8)
-        const feedbackPopup = document.getElementById('feedbackPopup');
-        const feedbackBtn = document.getElementById('feedback-btn');
-        const closeFeedback = document.getElementById('closeFeedback');
-        const feedbackForm = document.getElementById('feedbackForm');
-        const feedbackMessageAlert = document.getElementById('feedbackMessageAlert');
-
-        // Ключ для LocalStorage
-        const FEEDBACK_STORAGE_KEY = 'feedback_form_data';
-
-        // Функция для сохранения данных формы
-        function saveFormData() {
-            const formData = {
-                name: document.getElementById('feedbackName').value,
-                email: document.getElementById('feedbackEmail').value,
-                phone: document.getElementById('feedbackPhone').value,
-                organization: document.getElementById('feedbackOrganization').value,
-                message: document.getElementById('feedbackMessage').value,
-                agreement: document.getElementById('feedbackAgreement').checked
-            };
-            localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(formData));
-        }
-
-        // Функция для загрузки данных формы
-        function loadFormData() {
-            const savedData = localStorage.getItem(FEEDBACK_STORAGE_KEY);
-            if (savedData) {
-                const formData = JSON.parse(savedData);
-                document.getElementById('feedbackName').value = formData.name || '';
-                document.getElementById('feedbackEmail').value = formData.email || '';
-                document.getElementById('feedbackPhone').value = formData.phone || '';
-                document.getElementById('feedbackOrganization').value = formData.organization || '';
-                document.getElementById('feedbackMessage').value = formData.message || '';
-                document.getElementById('feedbackAgreement').checked = formData.agreement || false;
-            }
-        }
-
-        // Функция для очистки данных формы
-        function clearFormData() {
-            localStorage.removeItem(FEEDBACK_STORAGE_KEY);
-            feedbackForm.reset();
-        }
-
-        // Показать попап
-        function showFeedbackPopup() {
-            feedbackPopup.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Блокируем прокрутку основного контента
-            history.pushState({ feedbackOpen: true }, '', '#feedback');
-            loadFormData();
-        }
-
-        // Скрыть попап
-        function hideFeedbackPopup() {
-            feedbackPopup.classList.remove('active');
-            document.body.style.overflow = ''; // Восстанавливаем прокрутку
-            history.back();
-        }
-
-        // Обработчики событий - ИСПРАВЛЕНО!
-        feedbackBtn.addEventListener('click', showFeedbackPopup);
-        closeFeedback.addEventListener('click', hideFeedbackPopup);
-
-        // Закрытие по клику на фон
-        feedbackPopup.addEventListener('click', function(e) {
-            if (e.target === feedbackPopup) {
-                hideFeedbackPopup();
-            }
-        });
-
-        // Обработка нажатия кнопки "Назад" в браузере
-        window.addEventListener('popstate', function(e) {
-            if (feedbackPopup.classList.contains('active')) {
-                hideFeedbackPopup();
-            }
-        });
-
-        // Сохранение данных при вводе
-        const formInputs = feedbackForm.querySelectorAll('input, textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('input', saveFormData);
-        });
-        document.getElementById('feedbackAgreement').addEventListener('change', saveFormData);
-
-        // Отправка формы с использованием GitHub Pages
-        feedbackForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitFeedback');
-            const originalText = submitBtn.textContent;
-            
-            // Показываем индикатор загрузки
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Отправка...';
-            
-            try {
-                // Получаем данные формы
-                const formData = {
-                    name: document.getElementById('feedbackName').value,
-                    email: document.getElementById('feedbackEmail').value,
-                    phone: document.getElementById('feedbackPhone').value,
-                    organization: document.getElementById('feedbackOrganization').value || 'Не указана',
-                    message: document.getElementById('feedbackMessage').value,
-                    agreement: document.getElementById('feedbackAgreement').checked,
-                    timestamp: new Date().toISOString(),
-                    source: 'krichezzz.github.io/web2/'
-                };
-                
-                // Используем Formspree для обработки формы
-                // Для реального использования нужно заменить email на ваш
-                const response = await fetch('https://formspree.io/f/mqazobao', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        _replyto: formData.email,
-                        _subject: 'Новое сообщение с формы обратной связи',
-                        name: formData.name,
-                        email: formData.email,
-                        phone: formData.phone,
-                        organization: formData.organization,
-                        message: formData.message,
-                        timestamp: formData.timestamp,
-                        source: formData.source
-                    })
-                });
-                
-                if (response.ok) {
-                    showMessage('Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.', 'success');
-                    clearFormData();
-                    
-                    // Автоматическое закрытие через 3 секунды
-                    setTimeout(() => {
-                        hideFeedbackPopup();
-                    }, 3000);
-                } else {
-                    // Если Formspree недоступен, используем локальное сохранение
-                    const errorData = await response.json();
-                    if (errorData && errorData.error) {
-                        throw new Error(errorData.error);
-                    } else {
-                        throw new Error('Ошибка сети или сервера');
-                    }
-                }
-                
-            } catch (error) {
-                console.error('Ошибка отправки формы:', error);
-                
-                // Альтернативный вариант: сохраняем в localStorage для последующей обработки
-                try {
-                    const savedForms = JSON.parse(localStorage.getItem('saved_forms') || '[]');
-                    const formData = {
-                        name: document.getElementById('feedbackName').value,
-                        email: document.getElementById('feedbackEmail').value,
-                        phone: document.getElementById('feedbackPhone').value,
-                        organization: document.getElementById('feedbackOrganization').value,
-                        message: document.getElementById('feedbackMessage').value,
-                        timestamp: new Date().toISOString(),
-                        status: 'pending'
-                    };
-                    
-                    savedForms.push(formData);
-                    localStorage.setItem('saved_forms', JSON.stringify(savedForms));
-                    
-                    showMessage('Сообщение сохранено локально. Оно будет отправлено при восстановлении связи.', 'warning');
-                    clearFormData();
-                    
-                    setTimeout(() => {
-                        hideFeedbackPopup();
-                    }, 3000);
-                    
-                } catch (localError) {
-                    showMessage('Ошибка при отправке сообщения. Попробуйте еще раз позже.', 'danger');
-                }
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            }
-        });
-
-        // Функция для показа сообщений
-        function showMessage(message, type) {
-            feedbackMessageAlert.textContent = message;
-            feedbackMessageAlert.className = `alert alert-${type}`;
-            feedbackMessageAlert.style.display = 'block';
-            
-            // Автоматическое скрытие сообщения через 5 секунд
-            setTimeout(() => {
-                feedbackMessageAlert.style.display = 'none';
-            }, 5000);
-        }
-
-        // Инициализация при загрузке страницы - ИСПРАВЛЕНО!
-        document.addEventListener('DOMContentLoaded', function() {
-            // Проверяем, если в URL есть хэш #feedback, показываем форму
-            if (window.location.hash === '#feedback') {
-                showFeedbackPopup();
-            }
-            
-            // Проверяем и отправляем сохраненные формы, если есть соединение
-            try {
-                const savedForms = JSON.parse(localStorage.getItem('saved_forms') || '[]');
-                if (savedForms.length > 0 && navigator.onLine) {
-                    console.log(`Найдено ${savedForms.length} сохраненных форм для отправки`);
-                    // Здесь можно реализовать отправку сохраненных форм
-                }
-            } catch (e) {
-                console.error('Ошибка при обработке сохраненных форм:', e);
-            }
-        });
-
-        // Обработка изменений состояния сети
-        window.addEventListener('online', function() {
-            console.log('Соединение восстановлено');
         });
     </script>
 </body>
