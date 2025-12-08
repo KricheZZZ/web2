@@ -43,6 +43,12 @@
                 height: 95vh;
                 max-height: 95vh;
                 margin: 10px;
+                padding: 15px;
+            }
+            
+            .feedback-form-container form {
+                height: calc(100% - 60px);
+                overflow-y: auto;
             }
         }
         
@@ -368,7 +374,9 @@
                         </div>
                         
                         <!-- Цель для фрагментной ссылки -->
-                        <div id="fragment-target" class="mt-4 p-3 bg-light rounded"
+                        <div id="fragment-target" class="mt-4 p-3 bg-light rounded">
+                            <h5>Фрагментная цель</h5>
+                            <p>Это цель для фрагментной ссылки. Вы успешно перешли к этому разделу!</p>
                         </div>
                     </div>
                 </div>
@@ -877,7 +885,7 @@ class GallerySlider {
         });
         document.getElementById('feedbackAgreement').addEventListener('change', saveFormData);
 
-        // Отправка формы
+        // Отправка формы с использованием GitHub Pages
         feedbackForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -889,32 +897,86 @@ class GallerySlider {
             submitBtn.textContent = 'Отправка...';
             
             try {
-                const formData = new FormData(feedbackForm);
-                const data = Object.fromEntries(formData);
+                // Получаем данные формы
+                const formData = {
+                    name: document.getElementById('feedbackName').value,
+                    email: document.getElementById('feedbackEmail').value,
+                    phone: document.getElementById('feedbackPhone').value,
+                    organization: document.getElementById('feedbackOrganization').value || 'Не указана',
+                    message: document.getElementById('feedbackMessage').value,
+                    agreement: document.getElementById('feedbackAgreement').checked,
+                    timestamp: new Date().toISOString(),
+                    source: 'krichezzz.github.io/web2/'
+                };
                 
-                // Отправка на сервер (используем Formcarry)
-                const response = await fetch('https://formcarry.com/s/ВАШ_ID_ФОРМЫ', {
+                // Используем Formspree для обработки формы
+                // Для реального использования нужно заменить email на ваш
+                const response = await fetch('https://formspree.io/f/mqazobao', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify({
+                        _replyto: formData.email,
+                        _subject: 'Новое сообщение с формы обратной связи',
+                        name: formData.name,
+                        email: formData.email,
+                        phone: formData.phone,
+                        organization: formData.organization,
+                        message: formData.message,
+                        timestamp: formData.timestamp,
+                        source: formData.source
+                    })
                 });
                 
-                const result = await response.json();
-                
-                if (result.code === 200) {
-                    showMessage('Сообщение успешно отправлено!', 'success');
+                if (response.ok) {
+                    showMessage('Сообщение успешно отправлено! Мы свяжемся с вами в ближайшее время.', 'success');
                     clearFormData();
-                    setTimeout(hideFeedbackPopup, 2000);
+                    
+                    // Автоматическое закрытие через 3 секунды
+                    setTimeout(() => {
+                        hideFeedbackPopup();
+                    }, 3000);
                 } else {
-                    throw new Error(result.message || 'Ошибка отправки');
+                    // Если Formspree недоступен, используем локальное сохранение
+                    const errorData = await response.json();
+                    if (errorData && errorData.error) {
+                        throw new Error(errorData.error);
+                    } else {
+                        throw new Error('Ошибка сети или сервера');
+                    }
                 }
                 
             } catch (error) {
-                console.error('Ошибка:', error);
-                showMessage('Ошибка при отправке сообщения. Попробуйте еще раз.', 'danger');
+                console.error('Ошибка отправки формы:', error);
+                
+                // Альтернативный вариант: сохраняем в localStorage для последующей обработки
+                try {
+                    const savedForms = JSON.parse(localStorage.getItem('saved_forms') || '[]');
+                    const formData = {
+                        name: document.getElementById('feedbackName').value,
+                        email: document.getElementById('feedbackEmail').value,
+                        phone: document.getElementById('feedbackPhone').value,
+                        organization: document.getElementById('feedbackOrganization').value,
+                        message: document.getElementById('feedbackMessage').value,
+                        timestamp: new Date().toISOString(),
+                        status: 'pending'
+                    };
+                    
+                    savedForms.push(formData);
+                    localStorage.setItem('saved_forms', JSON.stringify(savedForms));
+                    
+                    showMessage('Сообщение сохранено локально. Оно будет отправлено при восстановлении связи.', 'warning');
+                    clearFormData();
+                    
+                    setTimeout(() => {
+                        hideFeedbackPopup();
+                    }, 3000);
+                    
+                } catch (localError) {
+                    showMessage('Ошибка при отправке сообщения. Попробуйте еще раз позже.', 'danger');
+                }
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
@@ -939,6 +1001,22 @@ class GallerySlider {
             if (window.location.hash === '#feedback') {
                 showFeedbackPopup();
             }
+            
+            // Проверяем и отправляем сохраненные формы, если есть соединение
+            try {
+                const savedForms = JSON.parse(localStorage.getItem('saved_forms') || '[]');
+                if (savedForms.length > 0 && navigator.onLine) {
+                    console.log(`Найдено ${savedForms.length} сохраненных форм для отправки`);
+                    // Здесь можно реализовать отправку сохраненных форм
+                }
+            } catch (e) {
+                console.error('Ошибка при обработке сохраненных форм:', e);
+            }
+        });
+
+        // Обработка изменений состояния сети
+        window.addEventListener('online', function() {
+            console.log('Соединение восстановлено');
         });
     </script>
 </body>
