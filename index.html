@@ -612,146 +612,149 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Gallery Slider (Задание 7)
-        class GallerySlider {
-            constructor() {
-                // 8 красивых фото Нью-Йорка с Unsplash
-                this.images = [
-                    'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1522083165193-3424ed129620?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1492666673288-3c4b4576ad9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1546436836-07bfe8ee8b2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-                    'https://images.unsplash.com/photo-1543716091-a840c05249ec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80'
-                ];
-                
-                this.imageTitles = [
-                    "Таймс-сквер ночью",
-                    "Статуя Свободы",
-                    "Бруклинский мост",
-                    "Манхэттенский горизонт",
-                    "Центральный парк",
-                    "Эмпайр-стейт-билдинг",
-                    "Уолл-стрит",
-                    "Бродвейский театр"
-                ];
-                
-                this.currentPage = 0;
-                this.totalPages = 0;
-                this.itemsPerPage = 3;
-                
-                this.track = document.getElementById('galleryTrack');
-                this.prevArrow = document.getElementById('prevArrow');
-                this.nextArrow = document.getElementById('nextArrow');
-                this.pager = document.getElementById('galleryPager');
-                
-                this.init();
-                this.setupEventListeners();
-                this.updateItemsPerPage();
-                window.addEventListener('resize', () => this.updateItemsPerPage());
-            }
-            
-            init() {
-                // Create gallery items
-                this.images.forEach((src, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-                    item.innerHTML = `
-                        <img src="${src}" alt="${this.imageTitles[index]}" class="img-fluid">
-                        <div class="p-2 text-center">
-                            <small class="text-muted">${this.imageTitles[index]}</small>
-                        </div>
-                    `;
-                    this.track.appendChild(item);
-                });
-                
-                this.updateGallery();
-            }
-            
-            updateItemsPerPage() {
-                // Check if mobile
-                if (window.innerWidth <= 768) {
-                    this.itemsPerPage = 1;
-                } else {
-                    this.itemsPerPage = 3;
-                }
-                this.updateGallery();
-            }
-            
-            updateGallery() {
-                const totalItems = this.images.length;
-                this.totalPages = Math.ceil(totalItems / this.itemsPerPage);
-                
-                // Update track position
-                const trackWidth = this.track.offsetWidth;
-                const itemWidth = trackWidth / this.itemsPerPage;
-                const offset = -this.currentPage * itemWidth * this.itemsPerPage;
-                this.track.style.transform = `translateX(${offset}px)`;
-                
-                // Update arrows
-                this.prevArrow.disabled = this.currentPage === 0;
-                this.nextArrow.disabled = this.currentPage === this.totalPages - 1;
-                
-                // Update pager
-                this.updatePager();
-            }
-            
-            updatePager() {
-                this.pager.innerHTML = '';
-                
-                // Create page dots
-                for (let i = 0; i < this.totalPages; i++) {
-                    const dot = document.createElement('button');
-                    dot.className = `pager-dot ${i === this.currentPage ? 'active' : ''}`;
-                    dot.setAttribute('aria-label', `Страница ${i + 1}`);
-                    dot.addEventListener('click', () => this.goToPage(i));
-                    this.pager.appendChild(dot);
-                }
-                
-                // Add page text
-                const pageText = document.createElement('div');
-                pageText.className = 'pager-text';
-                pageText.textContent = `Страница ${this.currentPage + 1} из ${this.totalPages}`;
-                this.pager.appendChild(pageText);
-            }
-            
-            goToPage(page) {
-                if (page >= 0 && page < this.totalPages) {
-                    this.currentPage = page;
-                    this.updateGallery();
-                }
-            }
-            
-            nextPage() {
-                if (this.currentPage < this.totalPages - 1) {
-                    this.currentPage++;
-                    this.updateGallery();
-                }
-            }
-            
-            prevPage() {
-                if (this.currentPage > 0) {
-                    this.currentPage--;
-                    this.updateGallery();
-                }
-            }
-            
-            setupEventListeners() {
-                this.prevArrow.addEventListener('click', () => this.prevPage());
-                this.nextArrow.addEventListener('click', () => this.nextPage());
-                
-                // Keyboard navigation
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') {
-                        this.prevPage();
-                    } else if (e.key === 'ArrowRight') {
-                        this.nextPage();
-                    }
-                });
-            }
+// Gallery Slider (Задание 7)
+class GallerySlider {
+    constructor() {
+        // 8 красивых фото Нью-Йорка с надежных источников
+        this.images = [
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu.jpg/800px-View_of_Empire_State_Building_from_Rockefeller_Center_New_York_City_dllu.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Lady_Liberty_under_a_blue_sky_%28cropped%29.jpg/800px-Lady_Liberty_under_a_blue_sky_%28cropped%29.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Brooklyn_Bridge_2020.jpg/800px-Brooklyn_Bridge_2020.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Times_Square_1-2.JPG/800px-Times_Square_1-2.JPG',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Central_Park_%284823811357%29.jpg/800px-Central_Park_%284823811357%29.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/800px-Empire_State_Building_%28aerial_view%29.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Charging_Bull_Front_NY_Security_Adjustments.jpg/800px-Charging_Bull_Front_NY_Security_Adjustments.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Radio_City_Music_Hall_2012.jpg/800px-Radio_City_Music_Hall_2012.jpg'
+        ];
+        
+        this.imageTitles = [
+            "Эмпайр-стейт-билдинг",
+            "Статуя Свободы",
+            "Бруклинский мост",
+            "Таймс-сквер",
+            "Центральный парк",
+            "Эмпайр-стейт-билдинг (вид сверху)",
+            "Уолл-стрит (Бык)",
+            "Радио-сити мьюзик-холл"
+        ];
+        
+        this.currentPage = 0;
+        this.totalPages = 0;
+        this.itemsPerPage = 3;
+        
+        this.track = document.getElementById('galleryTrack');
+        this.prevArrow = document.getElementById('prevArrow');
+        this.nextArrow = document.getElementById('nextArrow');
+        this.pager = document.getElementById('galleryPager');
+        
+        this.init();
+        this.setupEventListeners();
+        this.updateItemsPerPage();
+        window.addEventListener('resize', () => this.updateItemsPerPage());
+    }
+    
+    init() {
+        // Очищаем трек на случай переинициализации
+        this.track.innerHTML = '';
+        
+        // Create gallery items
+        this.images.forEach((src, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <img src="${src}" alt="${this.imageTitles[index]}" class="img-fluid" loading="lazy">
+                <div class="p-2 text-center">
+                    <small class="text-muted">${this.imageTitles[index]}</small>
+                </div>
+            `;
+            this.track.appendChild(item);
+        });
+        
+        this.updateGallery();
+    }
+    
+    updateItemsPerPage() {
+        // Check if mobile
+        if (window.innerWidth <= 768) {
+            this.itemsPerPage = 1;
+        } else {
+            this.itemsPerPage = 3;
         }
+        this.updateGallery();
+    }
+    
+    updateGallery() {
+        const totalItems = this.images.length;
+        this.totalPages = Math.ceil(totalItems / this.itemsPerPage);
+        
+        // Update track position
+        const trackWidth = this.track.offsetWidth;
+        const itemWidth = trackWidth / this.itemsPerPage;
+        const offset = -this.currentPage * itemWidth * this.itemsPerPage;
+        this.track.style.transform = `translateX(${offset}px)`;
+        
+        // Update arrows
+        this.prevArrow.disabled = this.currentPage === 0;
+        this.nextArrow.disabled = this.currentPage === this.totalPages - 1;
+        
+        // Update pager
+        this.updatePager();
+    }
+    
+    updatePager() {
+        this.pager.innerHTML = '';
+        
+        // Create page dots
+        for (let i = 0; i < this.totalPages; i++) {
+            const dot = document.createElement('button');
+            dot.className = `pager-dot ${i === this.currentPage ? 'active' : ''}`;
+            dot.setAttribute('aria-label', `Страница ${i + 1}`);
+            dot.addEventListener('click', () => this.goToPage(i));
+            this.pager.appendChild(dot);
+        }
+        
+        // Add page text
+        const pageText = document.createElement('div');
+        pageText.className = 'pager-text';
+        pageText.textContent = `Страница ${this.currentPage + 1} из ${this.totalPages}`;
+        this.pager.appendChild(pageText);
+    }
+    
+    goToPage(page) {
+        if (page >= 0 && page < this.totalPages) {
+            this.currentPage = page;
+            this.updateGallery();
+        }
+    }
+    
+    nextPage() {
+        if (this.currentPage < this.totalPages - 1) {
+            this.currentPage++;
+            this.updateGallery();
+        }
+    }
+    
+    prevPage() {
+        if (this.currentPage > 0) {
+            this.currentPage--;
+            this.updateGallery();
+        }
+    }
+    
+    setupEventListeners() {
+        this.prevArrow.addEventListener('click', () => this.prevPage());
+        this.nextArrow.addEventListener('click', () => this.nextPage());
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                this.prevPage();
+            } else if (e.key === 'ArrowRight') {
+                this.nextPage();
+            }
+        });
+    }
+}
 
         // Инициализация галереи
         document.addEventListener('DOMContentLoaded', function() {
